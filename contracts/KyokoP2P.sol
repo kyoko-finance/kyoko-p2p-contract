@@ -527,10 +527,6 @@ contract KyokoP2P is
         return _nft.getState();
     }
 
-    function testFun() public pure returns (uint256) {
-        return 8;
-    }
-
     function transferFee(
         address asset,
         address to,
@@ -572,7 +568,4 @@ contract KyokoP2P is
         return resultDepositIdArray;
     }
 
-    function betaVersion() public pure returns (uint256) {
-        return 1;
-    }
 }

@@ -35,7 +35,7 @@ contract AssetToken is ERC20Upgradeable,OwnableUpgradeable {
     }
 
 
-    function betaVersionV2() public pure returns(uint256) {
+    function betaVersion() public pure returns(uint256) {
         return 1;
     }
 }
