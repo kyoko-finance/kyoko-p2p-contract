@@ -1,4 +1,4 @@
-const Kyoko = artifacts.require("Kyoko");
+const Kyoko = artifacts.require("KyokoP2P");
 const Configuration = artifacts.require("Configuration");
 
 const fs = require('fs');
@@ -15,13 +15,13 @@ module.exports = async function (deployer, network, accounts) {
   const [account] = accounts;
   console.log('account', account);
 
-  await deployer.deploy(Configuration);
+  await deployer.deploy(Configuration, {overwrite: false});
 
   await deployer.link(Configuration, Kyoko);
 
   console.log("deploy Kyoko proxy start");
   await deployProxy(Kyoko, [lenderTokenAddress],
-    { deployer, initializer: 'initialize', overwrite: true, unsafeAllow: ["external-library-linking"] });
+    { deployer, initializer: 'initialize', overwrite: false, unsafeAllow: ["external-library-linking"] });
   console.log("deploy Kyoko proxy done");
 
   const kyokoAddress = Kyoko.address;

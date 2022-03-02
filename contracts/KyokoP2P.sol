@@ -21,7 +21,7 @@ import "./IKyoko.sol";
 /**
  * @dev The entrance of P2P business
  */
-contract Kyoko is
+contract KyokoP2P is
     OwnableUpgradeable,
     ERC721HolderUpgradeable,
     PausableUpgradeable,
@@ -570,5 +570,9 @@ contract Kyoko is
             }
         }
         return resultDepositIdArray;
+    }
+
+    function betaVersion() public pure returns (uint256) {
+        return 1;
     }
 }

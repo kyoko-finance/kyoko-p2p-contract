@@ -1,6 +1,5 @@
-const Web3 = require('web3');
 const fs = require('fs');
-const Kyoko = artifacts.require("Kyoko");
+const Kyoko = artifacts.require("KyokoP2P");
 const LenderToken = artifacts.require("LenderToken");
 
 const configStr = fs.readFileSync('../deploy.json');

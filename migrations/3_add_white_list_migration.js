@@ -1,6 +1,6 @@
 const Web3 = require('web3');
 const fs = require('fs');
-const Kyoko = artifacts.require("Kyoko");
+const Kyoko = artifacts.require("KyokoP2P");
 
 //add a new designated ERC20 Token to the white list
 const configStr = fs.readFileSync('../deploy.json');

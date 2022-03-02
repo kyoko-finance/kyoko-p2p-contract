@@ -10,7 +10,7 @@ module.exports = async function (deployer, network, accounts) {
 
   console.log("deploy TestNFT start");
   await deployer.deploy(
-    TestNFT
+    TestNFT, {overwrite: false}
   );
   console.log("deploy TestNFT done");
   const testNFTAddress = TestNFT.address;
