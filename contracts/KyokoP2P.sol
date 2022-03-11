@@ -157,7 +157,7 @@ contract KyokoP2P is
     ) external whenNotPaused checkWhiteList(_erc20Token) {
         DataTypes.NFT storage _nft = nftMap[_depositId];
         require(
-            nftHolderMap[msg.sender].contains(_depositId) && !_nft.getBorrow(),
+            nftHolderMap[msg.sender].contains(_depositId) && !_nft.getBorrow() && !_nft.getWithdraw(),
             "this _depositId is not your owner"
         );
         // change collateral status
@@ -183,6 +183,9 @@ contract KyokoP2P is
     ) external whenNotPaused checkWhiteList(_erc20Token) {
         DataTypes.NFT storage _nft = nftMap[_depositId];
         require(!_nft.getBorrow(), "This collateral already borrowed");
+        require(!_nft.getWithdraw(), "This collateral already withdrawn.");
+        require(!_nft.getRepay(), "Bad parameters:repay.");
+        require(!_nft.getLiquidate(), "Bad parameters:liquidate.");
 
         offerId.increment();
         uint256 currentOfferId = offerId.current();
