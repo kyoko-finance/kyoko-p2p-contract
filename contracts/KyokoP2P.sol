@@ -292,11 +292,11 @@ contract KyokoP2P is
         DataTypes.NFT memory _nft = nftMap[_depositId];
         require(
             _nft.collateral.apy == _apy &&
-            _nft.collateral.price == _price &&
-            _nft.collateral.period == _period &&
-            _nft.collateral.buffering == _buffering &&
-            _nft.collateral.erc20Token == _erc20Token
-            , "Bad parameters."
+                _nft.collateral.price == _price &&
+                _nft.collateral.period == _period &&
+                _nft.collateral.buffering == _buffering &&
+                _nft.collateral.erc20Token == _erc20Token,
+            "Bad parameters."
         );
         _lend(_depositId, true, msg.sender);
     }
@@ -309,6 +309,9 @@ contract KyokoP2P is
         DataTypes.NFT storage _nft = nftMap[_depositId];
 
         require(!_nft.getBorrow(), "This collateral already borrowed.");
+        require(!_nft.getWithdraw(), "This collateral already withdrawn.");
+        require(!_nft.getRepay(), "Bad parameters:repay.");
+        require(!_nft.getLiquidate(), "Bad parameters:liquidate.");
 
         address _erc20Token = _nft.collateral.erc20Token;
         uint256 price = _nft.collateral.price;
@@ -379,12 +382,9 @@ contract KyokoP2P is
         );
 
         DataTypes.NFT storage _nft = nftMap[_depositId];
-        require(
-            !_nft.getBorrow() || _nft.getRepay(),
-            "This debt is not repay."
-        );
-        require(!_nft.getWithdraw(), "you have withdrawn this NFT.");
-        require(!_nft.getLiquidate(), "This debt already liquidated");
+        require(!_nft.getBorrow() || (_nft.getBorrow() && _nft.getRepay()), "This debt is not repay.");
+        require(!_nft.getWithdraw(), "You have withdrawn this NFT.");
+        require(!_nft.getLiquidate(), "This debt already liquidated.");
 
         IERC721(_nft.nftAdr).safeTransferFrom(
             address(this),
@@ -558,14 +558,19 @@ contract KyokoP2P is
             // No one has come to borrow the NFT yet
             bool case1 = !borrowState && !withdrawState;
             // NFT during normal loan period
-            bool case2 = borrowState && !repayState && !liquidateState && !withdrawState;
+            bool case2 = borrowState &&
+                !repayState &&
+                !liquidateState &&
+                !withdrawState;
             // The NFT stakers has repay ERC20 token, but has not yet withdraw it
-            bool case3 = borrowState && repayState && !liquidateState && !withdrawState;
+            bool case3 = borrowState &&
+                repayState &&
+                !liquidateState &&
+                !withdrawState;
             if (case1 || case2 || case3) {
                 resultDepositIdArray[i] = tempDepositId;
             }
         }
         return resultDepositIdArray;
     }
-
 }
