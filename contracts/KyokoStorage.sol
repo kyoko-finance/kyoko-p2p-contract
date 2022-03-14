@@ -45,4 +45,8 @@ contract KyokoStorage {
     // mapping(address => EnumerableSetUpgradeable.UintSet) internal userOfferMap; //user address => offerId set
 
     mapping(uint256 => uint256) public lendMap; //lTokenId => depositId
+
+
+    EnumerableSetUpgradeable.UintSet internal open;
+    EnumerableSetUpgradeable.UintSet internal lent;
 }

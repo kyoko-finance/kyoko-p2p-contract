@@ -139,6 +139,7 @@ contract KyokoP2P is
         });
 
         IERC721(_nftAdr).safeTransferFrom(msg.sender, address(this), _nftId);
+        open.add(currentDepositId);
         emit Deposit(currentDepositId, _nftId, _nftAdr);
         return currentDepositId;
     }
@@ -344,6 +345,8 @@ contract KyokoP2P is
         _nft.borrowTimestamp = block.timestamp;
 
         _nft.setBorrow(true); // change collateral status
+        lent.add(_depositId);
+        open.remove(_depositId);
 
         emit Lend(_depositId, _lTokenId);
     }
@@ -372,6 +375,7 @@ contract KyokoP2P is
         );
         _nft.setRepay(true); // change collateral status
         _nft.repayAmount = _repayAmount;
+        lent.remove(_depositId);
         emit Repay(_depositId, _repayAmount);
     }
 
@@ -395,6 +399,8 @@ contract KyokoP2P is
             _nft.nftId
         ); // send collateral to msg.sender
         _nft.setWithdraw(true);
+        open.remove(_depositId);
+        lent.remove(_depositId);
         emit ClaimCollateral(_depositId);
     }
 
@@ -467,6 +473,7 @@ contract KyokoP2P is
             _nft.nftId
         ); // send collateral to lender
         _nft.setLiquidate(true);
+        lent.remove(_depositId);
         emit Liquidate(_depositId);
     }
 
@@ -576,4 +583,14 @@ contract KyokoP2P is
         }
         return resultDepositIdArray;
     }
+
+
+    function getOpen() public view returns (uint256[] memory) {
+        return open.values();
+    }
+
+    function getLent() public view returns (uint256[] memory) {
+        return lent.values();
+    }
+
 }
