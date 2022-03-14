@@ -584,11 +584,16 @@ contract KyokoP2P is
         return resultDepositIdArray;
     }
 
-
+    /**
+     * @dev get the depositId array of the open state
+     */
     function getOpen() public view returns (uint256[] memory) {
         return open.values();
     }
 
+    /**
+     * @dev get the depositId array of the lent state
+     */
     function getLent() public view returns (uint256[] memory) {
         return lent.values();
     }

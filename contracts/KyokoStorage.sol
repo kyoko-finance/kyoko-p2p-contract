@@ -46,7 +46,8 @@ contract KyokoStorage {
 
     mapping(uint256 => uint256) public lendMap; //lTokenId => depositId
 
-
+    // open state data, for front-end query
     EnumerableSetUpgradeable.UintSet internal open;
+    // lent state data, for front-end query
     EnumerableSetUpgradeable.UintSet internal lent;
 }
