@@ -3,7 +3,7 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "./DataTypes.sol";
 import "./Configuration.sol";
 import "./LenderToken.sol";
@@ -23,10 +23,10 @@ contract KyokoStorage {
     LenderToken public lToken;
 
     //The depositId of Staking NFT
-    Counters.Counter internal depositId;
+    CountersUpgradeable.Counter internal depositId;
 
     //The user's offerId
-    Counters.Counter internal offerId;
+    CountersUpgradeable.Counter internal offerId;
 
     /**
      * support ERC20 white list

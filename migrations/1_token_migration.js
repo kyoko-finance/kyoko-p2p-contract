@@ -8,13 +8,14 @@ module.exports = async function (deployer, network, accounts) {
   console.log('account', account);
 
   console.log("deploy LenderToken start");
-  await deployer.deploy(
-    LenderToken
-  );
+  // await deployer.deploy(
+  //   LenderToken
+  // );
+  await deployProxy(LenderToken, [],
+    { deployer, initializer: 'initialize', overwrite: false });
+
   console.log("deploy LenderToken done");
   const lenderTokenAddress = LenderToken.address;
-
-
 
 
   //first step, clear the previous deploy file

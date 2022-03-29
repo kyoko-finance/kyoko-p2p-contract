@@ -30,7 +30,7 @@ contract KyokoP2P is
 {
     using SafeMathUpgradeable for uint256;
     using SafeERC20Upgradeable for IERC20Upgradeable;
-    using Counters for Counters.Counter;
+    using CountersUpgradeable for CountersUpgradeable.Counter;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
     using Configuration for DataTypes.NFT;
@@ -104,11 +104,11 @@ contract KyokoP2P is
         string memory _description
     ) external whenNotPaused checkWhiteList(_erc20Token) returns (uint256) {
         require(
-            IERC721(_nftAdr) != lToken,
+            IERC721Upgradeable(_nftAdr) != lToken,
             "the lender token Credential not supported."
         );
         require(
-            IERC721(_nftAdr).supportsInterface(0x80ac58cd),
+            IERC721Upgradeable(_nftAdr).supportsInterface(0x80ac58cd),
             "Parameter _nftAdr is not ERC721 contract address"
         );
 
@@ -138,7 +138,7 @@ contract KyokoP2P is
             collateral: _collateral
         });
 
-        IERC721(_nftAdr).safeTransferFrom(msg.sender, address(this), _nftId);
+        IERC721Upgradeable(_nftAdr).safeTransferFrom(msg.sender, address(this), _nftId);
         open.add(currentDepositId);
         emit Deposit(currentDepositId, _nftId, _nftAdr);
         return currentDepositId;
@@ -393,7 +393,7 @@ contract KyokoP2P is
         require(!_nft.getWithdraw(), "You have withdrawn this NFT.");
         require(!_nft.getLiquidate(), "This debt already liquidated.");
 
-        IERC721(_nft.nftAdr).safeTransferFrom(
+        IERC721Upgradeable(_nft.nftAdr).safeTransferFrom(
             address(this),
             msg.sender,
             _nft.nftId
@@ -467,7 +467,7 @@ contract KyokoP2P is
             "Not lToken owner"
         ); // Verify token owner
         lToken.burn(_nft.lTokenId); // burn lToken
-        IERC721(_nft.nftAdr).safeTransferFrom(
+        IERC721Upgradeable(_nft.nftAdr).safeTransferFrom(
             address(this),
             msg.sender,
             _nft.nftId

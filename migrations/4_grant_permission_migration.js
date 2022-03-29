@@ -16,8 +16,10 @@ module.exports = async function (deployer, network, accounts) {
   console.log("grant kyoko mint LenderToken start");
   const kyoko = await Kyoko.deployed();
   const lenderToken = await LenderToken.deployed();
-  await lenderToken.transferOwnership(kyoko.address);
-
+  console.log("lenderTokenAddress:", lenderToken);
+  // await lenderToken.transferOwnership(kyoko.address);
+  const ROLE_MINTER = await lenderToken.ROLE_MINTER();
+  await lenderToken.grantRole(ROLE_MINTER, kyoko.address);
   console.log("grant kyoko mint LenderToken done");
 
 
