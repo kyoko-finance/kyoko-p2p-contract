@@ -60,6 +60,7 @@ contract KyokoP2P is
         } else {
             _unpause();
         }
+        emit SetPause(pause);
     }
 
     function updateWhiteList(address _address, bool _active)
@@ -540,13 +541,13 @@ contract KyokoP2P is
         return _nft.getState();
     }
 
-    function transferFee(
-        address asset,
-        address to,
-        uint256 amount
-    ) public onlyOwner {
-        IERC20Upgradeable(asset).safeTransfer(to, amount);
-    }
+    // function transferFee(
+    //     address asset,
+    //     address to,
+    //     uint256 amount
+    // ) public onlyOwner {
+    //     IERC20Upgradeable(asset).safeTransfer(to, amount);
+    // }
 
     function getEffectiveNftHolderDepositId(address holder)
         public

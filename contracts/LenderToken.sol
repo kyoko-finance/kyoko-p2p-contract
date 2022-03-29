@@ -28,6 +28,11 @@ contract LenderToken is
     string private _baseURIextended;
 
 
+    event SetBaseURI(string baseURI_);
+
+    event Mint(address indexed player);
+
+
     modifier onlyMinter() {
         require(
             hasRole(ROLE_MINTER, _msgSender()),
@@ -67,6 +72,7 @@ contract LenderToken is
 
     function setBaseURI(string memory baseURI_) external onlyLTokenManager {
         _baseURIextended = baseURI_;
+        emit SetBaseURI(baseURI_);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -77,6 +83,7 @@ contract LenderToken is
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
         _mint(player, newItemId);
+        emit Mint(player);
         return newItemId;
     }
 

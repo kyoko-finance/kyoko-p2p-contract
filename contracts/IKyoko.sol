@@ -12,7 +12,9 @@ interface IKyoko {
         bytes data
     );
 
-    event UpdateWhiteList(address _address, bool _active);
+    event SetPause(bool pause);
+
+    event UpdateWhiteList(address indexed _address, bool _active);
 
     event SetFee(uint256 _fee);
 
