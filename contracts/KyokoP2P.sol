@@ -73,6 +73,7 @@ contract KyokoP2P is
     }
 
     function setFee(uint256 _fee) external whenNotPaused onlyOwner {
+        require(_fee * 10 <= FEE_PERCENTAGE_BASE, "fee too high");
         fee = _fee;
         emit SetFee(_fee);
     }
@@ -209,7 +210,8 @@ contract KyokoP2P is
             cancel: false,
             offerId: currentOfferId,
             lTokenId: 0,
-            user: msg.sender
+            user: msg.sender,
+            fee: fee
         });
         depositIdOfferMap[_depositId].add(currentOfferId);
         offerMap[currentOfferId] = _off;
@@ -235,7 +237,8 @@ contract KyokoP2P is
         depositIdOfferMap[_depositId].remove(_offerId);
         _offer.cancel = true;
 
-        uint256 _totalAmount = _offer.price.mul(FEE_PERCENTAGE_BASE + fee).div(
+        //When the user cancels the offer, it is calculated according to the fee when the offer was added
+        uint256 _totalAmount = _offer.price.mul(FEE_PERCENTAGE_BASE + _offer.fee).div(
             FEE_PERCENTAGE_BASE
         );
         IERC20Upgradeable(_offer.erc20Token).safeTransfer(

@@ -23,6 +23,7 @@ library DataTypes {
         uint256 offerId; //final sold offerId
         uint256 lTokenId; //lTokenId, the token's id given to the lender
         address user; //the person who given this offer
+        uint256 fee;// The fee when the user adds an offer
     }
 
     struct NFT {
