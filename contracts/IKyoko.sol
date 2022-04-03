@@ -38,11 +38,11 @@ interface IKyoko {
         address indexed user
     );
 
-    event AcceptOffer(uint256 indexed _depositId, uint256 indexed _offerId);
+    event AcceptOffer(address indexed offerUser, address indexed nftUser,uint256 indexed _depositId, uint256 _offerId);
 
     event Borrow(uint256 indexed _depositId);
 
-    event Lend(uint256 indexed _depositId, uint256 indexed _lTokenId);
+    event Lend(address indexed lender, address indexed nftUser, uint256 indexed _depositId, uint256 _lTokenId);
 
     event Repay(uint256 indexed _depositId, uint256 _amount);
 

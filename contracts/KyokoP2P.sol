@@ -283,7 +283,7 @@ contract KyokoP2P is
 
         _lend(_depositId, false, _offer.user);
 
-        emit AcceptOffer(_depositId, _offerId);
+        emit AcceptOffer(_offer.user, msg.sender, _depositId, _offerId);
     }
 
     /**
@@ -352,7 +352,7 @@ contract KyokoP2P is
         lent.add(_depositId);
         open.remove(_depositId);
 
-        emit Lend(_depositId, _lTokenId);
+        emit Lend(offerUser, _nft.holder, _depositId, _lTokenId);
     }
 
     /**
