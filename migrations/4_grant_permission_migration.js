@@ -6,8 +6,8 @@ const configStr = fs.readFileSync('../deploy.json');
 const deployConfig = JSON.parse(configStr);
 const lenderTokenAddress = deployConfig.lenderToken;
 const kyokoProxyAddress = deployConfig.kyokoProxy;
-const assetTokenAddress = deployConfig.assetToken;
-const testNFTAddress = deployConfig.testNFT;
+// const assetTokenAddress = deployConfig.assetToken;
+// const testNFTAddress = deployConfig.testNFT;
 
 
 module.exports = async function (deployer, network, accounts) {
@@ -16,7 +16,7 @@ module.exports = async function (deployer, network, accounts) {
   console.log("grant kyoko mint LenderToken start");
   const kyoko = await Kyoko.deployed();
   const lenderToken = await LenderToken.deployed();
-  console.log("lenderTokenAddress:", lenderToken);
+  // console.log("lenderTokenAddress:", lenderToken);
   // await lenderToken.transferOwnership(kyoko.address);
   const ROLE_MINTER = await lenderToken.ROLE_MINTER();
   await lenderToken.grantRole(ROLE_MINTER, kyoko.address);
@@ -25,9 +25,9 @@ module.exports = async function (deployer, network, accounts) {
 
   console.table({
     lenderToken: lenderTokenAddress,
-    kyokoProxy: kyokoProxyAddress,
-    assetToken: assetTokenAddress,
-    testNFT: testNFTAddress
+    kyokoProxy: kyokoProxyAddress
+    // assetToken: assetTokenAddress
+    // testNFT: testNFTAddress
   });
 
   console.log("❤⭕ All deployment tasks are completed.");

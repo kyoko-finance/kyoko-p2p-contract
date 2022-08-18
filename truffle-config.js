@@ -119,7 +119,8 @@
      mainnet: {
        provider: () => new HDWalletProvider(mnemonic, `https://mainnet.infura.io/v3/` + infuraKey),
        network_id: 1,
-       gasPrice: Web3.utils.toWei('40', 'gwei')
+       gasPrice: Web3.utils.toWei('10', 'gwei'),
+       gas: 9999972
      },
      // Useful for private networks
      // private: {

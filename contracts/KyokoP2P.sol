@@ -140,7 +140,11 @@ contract KyokoP2P is
             collateral: _collateral
         });
 
-        IERC721Upgradeable(_nftAdr).safeTransferFrom(msg.sender, address(this), _nftId);
+        IERC721Upgradeable(_nftAdr).safeTransferFrom(
+            msg.sender,
+            address(this),
+            _nftId
+        );
         open.add(currentDepositId);
         emit Deposit(currentDepositId, _nftId, _nftAdr);
         return currentDepositId;
@@ -160,7 +164,9 @@ contract KyokoP2P is
     ) external whenNotPaused checkWhiteList(_erc20Token) {
         DataTypes.NFT storage _nft = nftMap[_depositId];
         require(
-            nftHolderMap[msg.sender].contains(_depositId) && !_nft.getBorrow() && !_nft.getWithdraw(),
+            nftHolderMap[msg.sender].contains(_depositId) &&
+                !_nft.getBorrow() &&
+                !_nft.getWithdraw(),
             "this _depositId is not your owner"
         );
         // change collateral status
@@ -239,9 +245,10 @@ contract KyokoP2P is
         _offer.cancel = true;
 
         //When the user cancels the offer, it is calculated according to the fee when the offer was added
-        uint256 _totalAmount = _offer.price.mul(FEE_PERCENTAGE_BASE + _offer.fee).div(
-            FEE_PERCENTAGE_BASE
-        );
+        uint256 _totalAmount = _offer
+            .price
+            .mul(FEE_PERCENTAGE_BASE + _offer.fee)
+            .div(FEE_PERCENTAGE_BASE);
         IERC20Upgradeable(_offer.erc20Token).safeTransfer(
             msg.sender,
             _totalAmount
@@ -386,25 +393,29 @@ contract KyokoP2P is
     /**
      * @dev When the NFT stakers pay back the money, he can get back NFT
      */
-    function claimCollateral(uint256 _depositId) external {
+    function claimCollateral(uint256 _depositId) external  {
         require(
             nftHolderMap[msg.sender].contains(_depositId),
             "this depositId is not belong to you."
         );
 
         DataTypes.NFT storage _nft = nftMap[_depositId];
-        require(!_nft.getBorrow() || (_nft.getBorrow() && _nft.getRepay()), "This debt is not repay.");
+        require(
+            !_nft.getBorrow() || (_nft.getBorrow() && _nft.getRepay()),
+            "This debt is not repay."
+        );
         require(!_nft.getWithdraw(), "You have withdrawn this NFT.");
         require(!_nft.getLiquidate(), "This debt already liquidated.");
+
+        _nft.setWithdraw(true);
+        open.remove(_depositId);
+        lent.remove(_depositId);
 
         IERC721Upgradeable(_nft.nftAdr).safeTransferFrom(
             address(this),
             msg.sender,
             _nft.nftId
         ); // send collateral to msg.sender
-        _nft.setWithdraw(true);
-        open.remove(_depositId);
-        lent.remove(_depositId);
         emit ClaimCollateral(_depositId);
     }
 
@@ -601,5 +612,4 @@ contract KyokoP2P is
     function getLent() public view returns (uint256[] memory) {
         return lent.values();
     }
-
 }

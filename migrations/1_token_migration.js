@@ -1,5 +1,7 @@
 const LenderToken = artifacts.require("LenderToken");
 
+const { deployProxy } = require('@openzeppelin/truffle-upgrades');
+
 const fs = require('fs');
 const saveData = require('../fsUtil');
 
