@@ -482,13 +482,13 @@ contract KyokoP2P is
             "Not lToken owner"
         ); // Verify token owner
         lToken.burn(_nft.lTokenId); // burn lToken
+        _nft.setLiquidate(true);
+        lent.remove(_depositId);
         IERC721Upgradeable(_nft.nftAdr).safeTransferFrom(
             address(this),
             msg.sender,
             _nft.nftId
         ); // send collateral to lender
-        _nft.setLiquidate(true);
-        lent.remove(_depositId);
         emit Liquidate(_depositId);
     }
 
